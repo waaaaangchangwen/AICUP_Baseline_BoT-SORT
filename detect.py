@@ -11,9 +11,6 @@ from utils.opt import arg_parse
 from utils.linear_interpolation import tube_interpolation
 from utils.tube_processing import tube_change_axis, action_tube_padding, combine_label, stack_imgs_padding
 
-import sys
-sys.path.append('./Track2')
-
 
 def out_of_range(x, y, max_x, max_y):
     x = min(max(x, 0), max_x)
@@ -129,56 +126,6 @@ def make_tube(args):
         args.tube['triplet'][args.video_name] = event_list
 
     return 0
-
-
-def make_t2_tube(tube, action_cls, loc_cls):
-    t2_tubes = {}
-    frames_len = len(tube['frames'])
-    action_cls = action_tube_padding(
-        action_cls,
-        prev_frames=2,
-        last_frames=1,
-        frames_len=frames_len
-    )
-    
-    combined_cls = []
-    for frame_num in range(frames_len):
-        combined_cls.append(combine_label(agent_id=tube['label_id'], action_id=action_cls[frame_num], loc_id=loc_cls[frame_num]))
-        
-    for frame_num in range(frames_len):
-        cls = combined_cls[frame_num]
-        if cls != -1:
-            if cls not in t2_tubes:
-                t2_tubes[cls] = {
-                    'label_id': cls,
-                    'scores': np.array([tube['scores'][frame_num]]),
-                    'boxes': np.array([tube['boxes'][frame_num]]),
-                    'score': tube['score'],
-                    'frames': np.array([tube['frames'][frame_num]])
-                }
-            else:
-                t2_tubes[cls]['scores'] = np.append(t2_tubes[cls]['scores'], tube['scores'][frame_num])
-                t2_tubes[cls]['boxes'] = np.append(t2_tubes[cls]['boxes'], [tube['boxes'][frame_num]], axis=0)
-                t2_tubes[cls]['frames'] = np.append(t2_tubes[cls]['frames'], tube['frames'][frame_num])
-
-    t2_tubes_list = []
-    for label_id, tube_data in t2_tubes.items():
-        t2_tubes_list.append(tube_data)
-        
-    return t2_tubes_list
-
-
-def merge_two_tube(args, major_tube, rare_tube):
-    """
-    ToDo: Merge tube using IoU.
-
-    """
-    for tube in rare_tube:
-        tube['label_id'] += 2
-
-    merged_tube = major_tube + rare_tube
-    
-    return merged_tube
     
 
 def two_branch_yolo(args, video):
@@ -256,31 +203,11 @@ if __name__ == '__main__':
     assert args.mode == 'Track1' or args.mode == 'Track2', 'detect mode only accept "Track1" or "Track2".'
 
     # debug_args:
-    args.devices = '1'
+    args.devices = '0'
     args.mode = 'Track1'
-    # args.pkl_name = 'T1_train_one_branch.pkl'
     args.pkl_name = 'T1_train_two_branch.pkl'
-    # args.video_path = '/datasets/roadpp/test_videos' # test
     args.video_path = '/datasets/roadpp/videos'
     args.save_res = True
-    
-    # two branch args:
-    args.two_branch = True
-    args.major_path = '/home/Ricky/0_Project/ROADpp_challenge_ICCV2023/runs/detect/yolov8l_major_1920_batch_8_/weights/last.pt'
-    args.rare_path = '/home/Ricky/0_Project/ROADpp_challenge_ICCV2023/runs/detect/yolov8l_rare_1920_batch_8_/weights/last.pt'
-
-    if args.two_branch:
-        args.major_yolo = YOLO(args.major_path)
-        args.rare_yolo = YOLO(args.rare_path)
-        args.imgsz = 1920
-    else:
-        args.yolo = YOLO(args.yolo_path)
-    
-    if args.mode == 'Track2':
-        args.action_detector = torch.load(args.action_detector_path)
-        args.action_detector.eval()
-
-        args.loc_detector = torch.load(args.loc_detector_path)
-        args.loc_detector.eval()
+    args.yolo = YOLO(args.yolo_path)
     
     main(args)
