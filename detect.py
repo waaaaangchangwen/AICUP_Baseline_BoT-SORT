@@ -126,36 +126,6 @@ def make_tube(args):
         args.tube['triplet'][args.video_name] = event_list
 
     return 0
-    
-
-def two_branch_yolo(args, video):
-    """
-    two branch tube pipeline
-    
-    Args:
-        video: video path.
-    """
-    args.tracker = args.major_yolo.track(
-        source=video,
-        imgsz=args.imgsz,
-        device=args.devices,
-        stream=True,
-        conf = 0.0
-    )
-    major_tube = make_tube(args)
-
-    args.tracker = args.rare_yolo.track(
-        source=video,
-        imgsz=args.imgsz,
-        device=args.devices,
-        stream=True,
-        conf = 0.0
-    )
-    rare_tube = make_tube(args)
-
-    args.tube['agent'][args.video_name] = merge_two_tube(args, major_tube, rare_tube)
-
-    return 0
 
 
 def main(args):
@@ -191,11 +161,7 @@ def main(args):
             make_tube(args)
 
     if args.save_res:
-        if os.path.exists(args.pkl_name):
-            os.remove(args.pkl_name)
-
-        with open(args.pkl_name, 'wb') as f:
-            pickle.dump(args.tube, f)
+        make_submission_file(args)
 
 
 if __name__ == '__main__':
