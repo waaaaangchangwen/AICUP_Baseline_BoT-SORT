@@ -4,7 +4,7 @@ if __name__ == '__main__':
     # Parameter
     pretrain_weight = 'pretrain_weight/yolov8l.pt'
     imgsz = 1280
-    batch_size = 32
+    batch_size = 63
 
     name = 'yolov8l_AICup_MCMOT_' + str(imgsz) + '_batch_' + str(batch_size) + '_'
 
@@ -16,7 +16,7 @@ if __name__ == '__main__':
         imgsz=imgsz,
         # rect = True, # if input not square set this true
         mosaic=True,
-        device=[1, 2],
+        device=[1, 2, 3],
         epochs=100,
         batch=batch_size,
         name=name

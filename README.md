@@ -5,14 +5,14 @@
 ├── train
 │   ├── Images
 │   │   ├── 0 (Camera ID)
-│   │   │  ├── 1.jpg (Frame ID)
-│   │   │  ├── 2.jpg
-│   │   │  ├── 3.jpg
+│   │   │  ├── 00001.jpg (Frame ID)
+│   │   │  ├── 00002.jpg
+│   │   │  ├── 00003.jpg
 │   │   │  ├── ...
 │   │   ├── 1 (Camera ID)
-│   │   │  ├── 1.jpg (Frame ID)
-│   │   │  ├── 2.jpg
-│   │   │  ├── 3.jpg
+│   │   │  ├── 00001.jpg (Frame ID)
+│   │   │  ├── 00002.jpg
+│   │   │  ├── 00003.jpg
 │   │   │  ├── ...
 │   └── Labels
 │       ├── 0.txt
@@ -23,14 +23,14 @@
 ├── test
 │   ├── Images
 │   │   ├── 0 (Camera ID)
-│   │   │  ├── 1.jpg (Frame ID)
-│   │   │  ├── 2.jpg
-│   │   │  ├── 3.jpg
+│   │   │  ├── 00001.jpg (Frame ID)
+│   │   │  ├── 00002.jpg
+│   │   │  ├── 00003.jpg
 │   │   │  ├── ...
 │   │   ├── 1 (Camera ID)
-│   │   │  ├── 1.jpg (Frame ID)
-│   │   │  ├── 2.jpg
-│   │   │  ├── 3.jpg
+│   │   │  ├── 00001.jpg (Frame ID)
+│   │   │  ├── 00002.jpg
+│   │   │  ├── 00003.jpg
 │   │   │  ├── ...
 ```
 
