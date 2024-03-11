@@ -51,7 +51,8 @@ def main(args):
             **kwargs (dict): Additional keyword arguments for configuring the tracking process. These arguments allow
                 for further customization of the tracking behavior.
                 
-        if you want to custom track func, see yolov8's docs: https://github.com/ultralytics/ultralytics/tree/main/ultralytics/trackers
+        You need to custom your ReID feature extractor in ultralytics/ultralytics/trackers/bot_sort.py #L160
+        see: https://github.com/ultralytics/ultralytics/blob/af6c02c39be4ee30e0119cc24468912257a3b529/ultralytics/trackers/bot_sort.py#L160
     """
     
     os.makedirs(args.out_file_path, exist_ok=True)
@@ -62,15 +63,15 @@ def main(args):
             os.path.join(args.data_path, '*')
         )
     ):
-        # tracking Using default tracker
+        # tracking Using default tracker (without ReID)
         args.tracker = args.yolo.track(
             source=cam_id_path,
             imgsz=args.imgsz,
             device=args.devices,
             stream=True,
             persist=True,
-            conf = 0.0
-            # save=True, # visualized your result at runs/detect/track
+            conf = 0.0,
+            save=True, # visualized your result at runs/detect/track
         )
 
         if args.save_res:
