@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # debug_args:
     args.devices = '1'
     args.data_path = '/datasets/AI_CUP_MCMOT_dataset/test/Images'
-    args.yolo_path = 'runs/detect/yolov8l_AICup_MCMOT_1280_batch_32_/weights/best.pt'
+    args.yolo_path = 'runs/detect/yolov8l_AICup_MCMOT_1280_batch_63_/weights/best.pt'
     args.imgsz = (720, 1280)
     args.save_res = True
     args.yolo = YOLO(args.yolo_path)

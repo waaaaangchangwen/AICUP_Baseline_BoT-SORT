@@ -23,41 +23,93 @@ pip install -r requirements.txt
 ```
 
 ## Data Preparation
-Download the AI_CUP dataset, And put them in the following structure:
+Download the AI_CUP dataset, original dataset structure is:
 ```python
 ├── train
-│   ├── Images
-│   │   ├── 0 (Camera ID)
-│   │   │  ├── 00001.jpg (Frame ID)
-│   │   │  ├── 00002.jpg
-│   │   │  ├── 00003.jpg
+│   ├── images
+│   │   ├── 0902_150000_151900 (Timestamp: Date_StartTime_EndTime)
+│   │   │  ├── 0_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 0_00002.jpg
 │   │   │  ├── ...
-│   │   ├── 1 (Camera ID)
-│   │   │  ├── 00001.jpg (Frame ID)
-│   │   │  ├── 00002.jpg
-│   │   │  ├── 00003.jpg
+│   │   │  ├── 1_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 1_00002.jpg
 │   │   │  ├── ...
-│   └── Labels
-│       ├── 0.txt
-│       ├── 1.txt
-│       ├── 2.txt
-│       ├── ...
+│   │   │  ├── 7_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 7_00002.jpg
+│   │   ├── 0902_190000_191900 (Timestamp: Date_StartTime_EndTime)
+│   │   │  ├── 0_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 0_00002.jpg
+│   │   │  ├── ...
+│   │   │  ├── 1_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 1_00002.jpg
+│   │   │  ├── ...
+│   │   │  ├── 7_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 7_00002.jpg
+│   │   ├── ...
+│   └── labels
+│   │   ├── 0902_150000_151900 (Timestamp: Date_StartTime_EndTime)
+│   │   │  ├── 0_00001.txt (CamID_FrameNum)
+│   │   │  ├── 0_00002.txt
+│   │   │  ├── ...
+│   │   │  ├── 1_00001.txt (CamID_FrameNum)
+│   │   │  ├── 1_00002.txt
+│   │   │  ├── ...
+│   │   │  ├── 7_00001.txt (CamID_FrameNum)
+│   │   │  ├── 7_00002.txt
+│   │   ├── 0902_190000_191900 (Timestamp: Date_StartTime_EndTime)
+│   │   │  ├── 0_00001.txt (CamID_FrameNum)
+│   │   │  ├── 0_00002.txt
+│   │   │  ├── ...
+│   │   │  ├── 1_00001.txt (CamID_FrameNum)
+│   │   │  ├── 1_00002.txt
+│   │   │  ├── ...
+│   │   │  ├── 7_00001.txt (CamID_FrameNum)
+│   │   │  ├── 7_00002.txt
+│   │   ├── ...
 --------------------------------------------------
 ├── test
-│   ├── Images
-│   │   ├── 0 (Camera ID)
-│   │   │  ├── 00001.jpg (Frame ID)
-│   │   │  ├── 00002.jpg
-│   │   │  ├── 00003.jpg
+│   ├── images
+│   │   ├── 0902_150000_151900 (Timestamp: Date_StartTime_EndTime)
+│   │   │  ├── 0_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 0_00002.jpg
 │   │   │  ├── ...
-│   │   ├── 1 (Camera ID)
-│   │   │  ├── 00001.jpg (Frame ID)
-│   │   │  ├── 00002.jpg
-│   │   │  ├── 00003.jpg
+│   │   │  ├── 1_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 1_00002.jpg
 │   │   │  ├── ...
+│   │   │  ├── 7_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 7_00002.jpg
+│   │   ├── 0902_190000_191900 (Timestamp: Date_StartTime_EndTime)
+│   │   │  ├── 0_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 0_00002.jpg
+│   │   │  ├── ...
+│   │   │  ├── 1_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 1_00002.jpg
+│   │   │  ├── ...
+│   │   │  ├── 7_00001.jpg (CamID_FrameNum)
+│   │   │  ├── 7_00002.jpg
+│   │   ├── ...
 ```
 
-## GroundTruth Format
+## ground Truth Format
+Each image corresponds to a text file, an example is provided below:
+
+class|center_x|center_y|width   |height|
+-----|--------|--------|--------|------|
+0    |0.704687|0.367592|0.032291|0.1   |
+
+```python
+# image_name1.txt
+
+0 0.704687 0.367592 0.032291 0.1
+0 0.704166 0.403703 0.030208 0.087037
+0 0.929166 0.710185 0.051041 0.162962
+0 0.934114 0.750925 0.084895 0.162962
+0 0.780208 0.273148 0.023958 0.062962
+0 0.780989 0.246296 0.022395 0.066666
+```
+
+
+## Evulate Format
 Using same format on [py-motmetrics](https://github.com/cheind/py-motmetrics)
 
 > [!WARNING]
