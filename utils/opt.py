@@ -3,9 +3,9 @@ import argparse
 def arg_parse():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--data_path', type=str, default='', help='data path')
-    parser.add_argument('--yolo_path', type=str, default='', help='yolo path')
-    parser.add_argument('--out_file_path', type=str, default='', help='data path')
+    parser.add_argument('--data_path', type=str, required=True, help='data path')
+    parser.add_argument('--yolo_path', type=str, required=True, help='yolo path')
+    parser.add_argument('--out_file_path', type=str, default='runs/tracking_res', help='data path')
     
     parser.add_argument('--devices', nargs='+', type=str, default='0', help='gpu number')
     

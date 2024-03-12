@@ -58,11 +58,7 @@ def main(args):
     os.makedirs(args.out_file_path, exist_ok=True)
     cam_id = 0
     
-    for cam_id_path in sorted(
-        glob.glob(
-            os.path.join(args.data_path, '*')
-        )
-    ):
+    for cam_id_path in sorted(glob.glob(os.path.join(args.data_path, '*'))):
         # tracking Using default tracker (without ReID)
         args.tracker = args.yolo.track(
             source=cam_id_path,
@@ -88,13 +84,13 @@ def main(args):
 if __name__ == '__main__':
     args = arg_parse()
 
-    # debug_args:
-    args.devices = '1'
-    args.data_path = '/datasets/AI_CUP_MCMOT_dataset/test/Images'
-    args.yolo_path = 'runs/detect/yolov8l_AICup_MCMOT_1280_batch_63_/weights/best.pt'
-    args.imgsz = (720, 1280)
-    args.save_res = True
-    args.yolo = YOLO(args.yolo_path)
-    args.out_file_path = 'runs/tracking_res'
+    # # debug_args:
+    # args.devices = '1'
+    # args.data_path = '/datasets/AI_CUP_MCMOT_dataset/test/Images'
+    # args.yolo_path = 'runs/detect/yolov8l_AICup_MCMOT_1280_batch_63_/weights/best.pt'
+    # args.imgsz = (720, 1280)
+    # args.save_res = True
+    # args.yolo = YOLO(args.yolo_path)
+    # args.out_file_path = 'runs/tracking_res'
     
     main(args)
