@@ -99,33 +99,38 @@ python utils/AICUP_to_YOLOv8.py --AICUP_dir "your AICUP dataset path" --YOLOv8_d
 The file tree after conversion by `AICUP_to_YOLOv8.py` is as follows:
 
 ```python
-├── train
-│   ├── images
-│   │   ├── 0902_150000_151900_0_00001.jpg (Date_StartTime_EndTime_CamID_FrameNum)
-│   │   ├── 0902_150000_151900_0_00002.jpg
-│   │   ├── ...
-│   │   ├── 0902_150000_151900_7_00001.jpg
-│   │   ├── 0902_150000_151900_7_00002.jpg
-│   │   ├── ...
-│   │   ├── 0902_190000_191900_0_00001.jpg (Date_StartTime_EndTime_CamID_FrameNum)
-│   │   ├── 0902_190000_191900_0_00002.jpg
-│   │   ├── ...
-│   │   ├── 0902_190000_191900_7_00001.jpg
-│   │   ├── 0902_190000_191900_7_00002.jpg
-│   │   ├── ...
-│   └── labels
-│   │   ├── 0902_150000_151900_0_00001.txt (Date_StartTime_EndTime_CamID_FrameNum)
-│   │   ├── 0902_150000_151900_0_00002.txt
-│   │   ├── ...
-│   │   ├── 0902_150000_151900_7_00001.txt
-│   │   ├── 0902_150000_151900_7_00002.txt
-│   │   ├── ...
-│   │   ├── 0902_190000_191900_0_00001.txt (Date_StartTime_EndTime_CamID_FrameNum)
-│   │   ├── 0902_190000_191900_0_00002.txt
-│   │   ├── ...
-│   │   ├── 0902_190000_191900_7_00001.txt
-│   │   ├── 0902_190000_191900_7_00002.txt
-│   │   ├── ...
+/datasets/AI_CUP_MCMOT_dataset/yolo
+    ├── train
+    │   ├── images
+    │   │   ├── 0902_150000_151900_0_00001.jpg (Date_StartTime_EndTime_CamID_FrameNum)
+    │   │   ├── 0902_150000_151900_0_00002.jpg
+    │   │   ├── ...
+    │   │   ├── 0902_150000_151900_7_00001.jpg
+    │   │   ├── 0902_150000_151900_7_00002.jpg
+    │   │   ├── ...
+    │   └── labels
+    │   │   ├── 0902_150000_151900_0_00001.txt (Date_StartTime_EndTime_CamID_FrameNum)
+    │   │   ├── 0902_150000_151900_0_00002.txt
+    │   │   ├── ...
+    │   │   ├── 0902_150000_151900_7_00001.txt
+    │   │   ├── 0902_150000_151900_7_00002.txt
+    │   │   ├── ...
+    ├── valid
+    │   ├── images
+    │   │   ├── 1015_190000_191900_0_00001.jpg (Date_StartTime_EndTime_CamID_FrameNum)
+    │   │   ├── 1015_190000_191900_0_00002.jpg
+    │   │   ├── ...
+    │   │   ├── 1015_190000_191900_7_00001.jpg
+    │   │   ├── 1015_190000_191900_7_00002.jpg
+    │   │   ├── ...
+    │   └── labels
+    │   │   ├── 1015_190000_191900_0_00001.txt (Date_StartTime_EndTime_CamID_FrameNum)
+    │   │   ├── 1015_190000_191900_0_00002.txt
+    │   │   ├── ...
+    │   │   ├── 1015_190000_191900_7_00001.txt
+    │   │   ├── 1015_190000_191900_7_00002.txt
+    │   │   ├── ...
+    ├── MCMOT.yaml (Yolo config)
 ```
 
 ## Ground Truth Format
@@ -264,5 +269,5 @@ Than you can get the result:
 
 ## ToDo
 
-- [ ] Fix `detect.py` output
+- [x] Fix `detect.py` output
 - [ ] Implement `AICUP_to_MOT15.py`

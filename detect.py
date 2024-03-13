@@ -56,12 +56,14 @@ def main(args):
     """
     
     os.makedirs(args.out_file_path, exist_ok=True)
-    cam_id = 0
     
-    for cam_id_path in sorted(glob.glob(os.path.join(args.data_path, '*'))):
+    # Path: /datasets/AI_CUP_MCMOT_dataset/train(valid, test)/images/timestemp_path
+    for timestemp_path in sorted(glob.glob(os.path.join(args.data_path, '*'))):
+        timestemp = timestemp_path.split('/')[-1]
+
         # tracking Using default tracker (without ReID)
         args.tracker = args.yolo.track(
-            source=cam_id_path,
+            source=timestemp_path, # one folder for one prediction
             imgsz=args.imgsz,
             device=args.devices,
             stream=True,
@@ -73,10 +75,8 @@ def main(args):
         if args.save_res:
             make_submission_file(
                 args, 
-                file_name=os.path.join(args.out_file_path, f'{cam_id}.txt'),
+                file_name=os.path.join(args.out_file_path, f'{timestemp}.txt'),
             )
-        
-        cam_id += 1
     
     return 0
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     # args.yolo_path = 'runs/detect/yolov8l_AICup_MCMOT_1280_batch_63_/weights/best.pt'
     # args.imgsz = (720, 1280)
     # args.save_res = True
-    # args.yolo = YOLO(args.yolo_path)
     # args.out_file_path = 'runs/tracking_res'
-    
+
+    args.yolo = YOLO(args.yolo_path)
     main(args)
