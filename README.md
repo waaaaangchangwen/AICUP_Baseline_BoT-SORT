@@ -1,4 +1,8 @@
 # AICup_MCMOT_Baseline
+
+> [!WARNING]
+> **This baseline only provides single-camera object tracking and does not include a ReID model for cross-camera association and tracking.**
+
 - Our baseline is base on Ultralytics YOLOv8 framework, providing multiple object tracking (MOT) algorithms: BoT-SORT and Bytetrack. 
 - In the BoT-SORT architecture, the ReID model used needs to be implemented and replaced independently. 
 - For more details, you can refer to the following Repository: 
