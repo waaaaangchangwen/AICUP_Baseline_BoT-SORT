@@ -2,6 +2,7 @@ import os
 import argparse
 import motmetrics as mm
 
+from tqdm import tqdm
 from loguru import logger
 
 
@@ -15,7 +16,7 @@ def evaluate(gt_dir, ts_dir):
     gt_files = sorted(os.listdir(gt_dir))
     ts_files = sorted(os.listdir(ts_dir))
 
-    for gt_file, ts_file in zip(gt_files, ts_files):
+    for gt_file, ts_file in tqdm(zip(gt_files, ts_files), desc='computing score'):
         gt_path = os.path.join(gt_dir, gt_file)
         ts_path = os.path.join(ts_dir, ts_file)
 

@@ -237,7 +237,7 @@ Before evaluate, you need to run `utils/AICUP_to_MOT15.py` to convert ground tru
 
 ```bash
 cd AICup_MCMOT_Baseline
-python utils/AICUP_to_MOT15.py --AICUP_dir "your AICUP dataset path" --MOT15_dir "converted dataset directory"
+python utils/AICUP_to_MOT15.py --AICUP_dir "your AICUP dataset path" --MOT15_dir "converted dataset directory" --imgsz "img size, (height, width)"
 ```
 
 You can used `utils/evaluate.py` to Evulate your submission by following commend:
@@ -270,4 +270,6 @@ Than you can get the result:
 ## ToDo
 
 - [x] Fix `detect.py` output
-- [ ] Implement `AICUP_to_MOT15.py`
+- [x] Implement `AICUP_to_MOT15.py`
+- [ ] Upload baseline score
+- [ ] Release test set

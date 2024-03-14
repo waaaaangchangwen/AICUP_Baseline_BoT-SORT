@@ -1,6 +1,4 @@
 import os
-import glob
-import shutil
 import argparse
 
 from tqdm import tqdm
@@ -9,83 +7,65 @@ from tqdm import tqdm
 def arg_parse():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--AICUP_dir', type=str, default='', help='your AICUP dataset path')
-    parser.add_argument('--MOT15_dir', type=str, default='', help='converted dataset directory')
+    parser.add_argument('--AICUP_dir', type=str, required=True, help='your AICUP dataset path')
+    parser.add_argument('--MOT15_dir', type=str, required=True, help='converted dataset directory')
+    parser.add_argument('--imgsz', type=tuple, default=(720, 1280), help='img size, (height, width)')
 
     opt = parser.parse_args()
     return opt
 
 
-def aicup_to_yolo(args):
-    train_dir = os.path.join(args.YOLOv8_dir, 'train')
-    valid_dir = os.path.join(args.YOLOv8_dir, 'valid')
-    os.makedirs(train_dir, exist_ok=True)
-    os.makedirs(valid_dir, exist_ok=True)
-    
-    os.makedirs(os.path.join(train_dir, 'images'), exist_ok=True)
-    os.makedirs(os.path.join(train_dir, 'labels'), exist_ok=True)
-    
-    os.makedirs(os.path.join(valid_dir, 'images'), exist_ok=True)
-    os.makedirs(os.path.join(valid_dir, 'labels'), exist_ok=True)
-    
-    total_files = sorted(
-        os.listdir(
-            os.path.join(args.AICUP_dir, 'images')
-        )
-    )
-    
-    total_count = len(total_files)
-    train_count = int(total_count * args.train_ratio)
-    
-    train_files = total_files[:train_count]
-    valid_files = total_files[train_count:]
-    
-    for src_path in tqdm(glob.glob(os.path.join(args.AICUP_dir, '*', '*', '*')), desc=f'copying data'):
-        text = src_path.split('/')
-        timestamp = text[-2]
-        camID_frameID = text[-1]
-        
-        train_or_valid = 'train' if timestamp in train_files else 'valid'
-        
-        if 'images' in text:
-            dst_path = os.path.join(args.YOLOv8_dir, train_or_valid, 'images', timestamp + '_' + camID_frameID)
-        elif 'labels' in text:
-            dst_path = os.path.join(args.YOLOv8_dir, train_or_valid, 'labels', timestamp + '_' + camID_frameID)
-        
-        shutil.copy2(src_path, dst_path)
-    
-    return 0
+def show_files(path, all_files):
+    file_list = os.listdir(path)
+    file_list.sort()
+    for file in file_list:
+        cur_path = os.path.join(path, file)
+        if os.path.isdir(cur_path):
+            show_files(cur_path, all_files)
+        else:
+            if not cur_path.endswith(('txt')):
+                continue
+            else:
+                all_files.append(cur_path )
+    return all_files
 
 
-def delete_track_id(labels_dir):
-    for file_path in tqdm(glob.glob(os.path.join(labels_dir, '*.txt')), desc='delete_track_id'):
-        with open(file_path, 'r') as f:
-            lines = f.readlines()
+def AI_CUP_to_MOT15(args):
+    os.makedirs(args.MOT15_dir, exist_ok=True)
+    total_files = show_files(args.AICUP_dir, [])
+    
+    frame_ID = 0
+    timestamp = ''
+    img_height, img_width = args.imgsz
 
-        new_lines = []
-        for line in lines:
-            text = line.split(' ')
+    for src_path in tqdm(total_files, desc='convert to MOT15 format'):
+        text = src_path.split(os.sep)
+        if 'labels' in text:
+            if timestamp != text[-2]:
+                timestamp = text[-2]
+                frame_ID = 0
+                
+            frame_ID = frame_ID + 1
+            f_mot15 = open(os.path.join(args.MOT15_dir, timestamp + '.txt'), 'a+')
+            f_aicup = open(src_path, 'r')
             
-            if len(text) > 5:
-                new_lines.append(line.replace(' ' + text[-1], '\n'))
-
-        with open(file_path, 'w') as f:
-            f.writelines(new_lines)
-
-    return 0
+            for line in f_aicup.readlines():
+                data = line.split(' ')
+                bb_width = float(data[3]) * img_width
+                bb_height = float(data[4]) * img_height
+                bb_left = float(data[1]) * img_width - bb_width / 2
+                bb_top = float(data[2]) * img_height - bb_height / 2
+                track_id = data[5].split('\n')
+                f_mot15.write(
+                    f'{str(frame_ID)},{track_id[0]},{str(bb_width)},{str(bb_height)},{str(bb_left)},{str(bb_top)},1,-1,-1,-1\n'
+                )
+                
+            f_aicup.close()
+            
+        f_mot15.close()
 
 
 if __name__ == '__main__':
     args = arg_parse()
+    AI_CUP_to_MOT15(args)
     
-    # debug
-    # args.AICUP_dir = '/mnt/Nami/AI_CUP_MCMOT_dataset/train'
-    # args.YOLOv8_dir = '/mnt/Nami/AI_CUP_MCMOT_dataset/yolo'
-    # args.train_ratio = 0.8
-    
-    aicup_to_yolo(args)
-    
-    train_dir = os.path.join(args.YOLOv8_dir, 'train', 'labels')
-    val_dir = os.path.join(args.YOLOv8_dir, 'valid', 'labels')
-    delete_track_id(train_dir)
-    delete_track_id(val_dir)
