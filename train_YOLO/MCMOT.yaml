@@ -1,0 +1,6 @@
+path: 'AI_CUP_MCMOT_dataset/yolo'
+train: 'train'
+val: 'valid'
+
+names:
+  0: 'car'
