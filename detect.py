@@ -59,7 +59,7 @@ def main(args):
     
     # Path: /datasets/AI_CUP_MCMOT_dataset/train(valid, test)/images/timestemp_path
     for timestemp_path in sorted(glob.glob(os.path.join(args.data_path, '*'))):
-        timestemp = timestemp_path.split('/')[-1]
+        timestemp = timestemp_path.split(os.sep)[-1]
 
         # tracking Using default tracker (without ReID)
         args.tracker = args.yolo.track(
