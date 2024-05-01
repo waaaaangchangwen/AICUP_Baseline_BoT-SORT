@@ -17,6 +17,10 @@ fast_reid/datasets/AICUP-ReID
 # folder
 /runs
 /eval_test
+/dataset
+/submit
+/weights
+yolov7/dataset
 
 # tools
 generate_video.py
